@@ -5,19 +5,14 @@ on:
   workflow_dispatch:
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Operating system selection
+    env: # Environment can be controlled at the job or step level
+      TERM: dumb # Sets the environment variable TERM to "dumb"
     steps:
-      - name: Checkout
-        uses: danysk/action-checkout@0.2.9
-      - id: branch-name # Custom id
-        uses: tj-actions/branch-names@v6
-      - id: output-from-shell
-        run: ruby -e 'puts "dice=#{rand(1..6)}"' >> $GITHUB_OUTPUT
-      - run: |
-          echo "The dice roll resulted in number ${{ steps.output-from-shell.outputs.dice }}"
-          if ${{ steps.branch-name.outputs.is_tag }} ; then
-            echo "This is tag ${{ steps.branch-name.outputs.tag }}"
-          else
-            echo "This is branch ${{ steps.branch-name.outputs.current_branch }}"
-            echo "Is this branch the default one? ${{ steps.branch-name.outputs.is_default }}"
-          fi
+      - name: Checkout # custom name Checkout the repository
+        uses: actions/checkout@v2 # Action implemented in this repository, tag "2"
+      - uses: joschi/setup-jdk@v2.3.0 # Action implemented in repository "joschi/setup-jdk" tag "2.3.0"
+        with: # Actions parameters (action name omitted)
+          java-version: 15
+      - name: Build
+        run: ./gradlew check
