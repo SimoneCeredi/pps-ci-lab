@@ -1,4 +1,3 @@
-
 #on push and pull request
 name: CI
 on:
