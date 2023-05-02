@@ -1,9 +1,3 @@
-#the workflow should:
-#Prepare a Linux virtual environment
-#Install Java at the appropriate version
-#Run Gradle making sure the build works on the reference machine
-
-
 name: CI
 on: [push],[pull_request]
 jobs:
